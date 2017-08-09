@@ -23,12 +23,7 @@ public class ChatPanelServer extends JPanel {
         add(scrollPane);
     }
     public void showMsg(String msg) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                textArea.append(msg + "\n");
-            }
-        });
+        SwingUtilities.invokeLater(() -> textArea.append(msg + "\n"));
     }
 
 

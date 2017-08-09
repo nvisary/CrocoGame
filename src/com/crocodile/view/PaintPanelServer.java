@@ -21,7 +21,6 @@ public class PaintPanelServer extends JPanel {
     private Color color = Color.black;
     private Server server;
     private BufferedWriter bufferedWriter;
-    private BufferedReader bufferedReader;
     private Game game;
     private  MouseHandler mouseHandler;
 
@@ -32,21 +31,18 @@ public class PaintPanelServer extends JPanel {
         setBackground(Color.white);
         setLayout(null);
 
-        //добавление на панель кнопки очистить поле и обработчик этой кнопки + кнопки изменения цвета рисования
         addButtonsListener();
 
         mouseHandler = new MouseHandler();
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseHandler);
-
-
     }
     public void paint(Graphics graphics) {
         super.paint(graphics);
     }
 
     private void addButtonsListener() {
-        JButton btnСlear = new JButton("Очистить поле");
+        JButton btnСlear = new JButton("Clear field");
         JButton btnRed = new JButton();
         JButton btnGreen = new JButton();
         JButton btnBlue = new JButton();
@@ -88,125 +84,92 @@ public class PaintPanelServer extends JPanel {
         add(btnGreen);
         add(btnBlue);
 
-        btnLoad.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Scanner in = null;
-                try {
-                    JFileChooser fileOpen = new JFileChooser();
-                    fileOpen.setDialogType(JFileChooser.OPEN_DIALOG);
-                    fileOpen.setCurrentDirectory(new File("C:/Users/Никита/Desktop/Saves"));
-                    int ret = fileOpen.showDialog(null, "Открыть файл");
-                    if (ret == JFileChooser.APPROVE_OPTION) {
-                        in = new Scanner(fileOpen.getSelectedFile());
-                    }
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
+        btnLoad.addActionListener(e -> {
+            Scanner in = null;
+            try {
+                JFileChooser fileOpen = new JFileChooser();
+                fileOpen.setDialogType(JFileChooser.OPEN_DIALOG);
+                int ret = fileOpen.showDialog(null, "Open file");
+                if (ret == JFileChooser.APPROVE_OPTION) {
+                    in = new Scanner(fileOpen.getSelectedFile());
                 }
-                String num = "";
-                while (in.hasNext()) {
-                    String line = in.nextLine();
-
-                    //System.out.println(line);
-                    Point p = new Point();
-                    for (int i = 2; i < line.length(); i++) {
-                        char ch = line.charAt(i);
-                        if (ch != ' ' && i != line.length() - 1) {
-                            num += ch;
-                            //System.out.println("num: " + Integer.parseInt(num));
-                        } else {
-                            if (i == line.length() - 1) {
-                                num += line.charAt(i);
-                            }
-                            if (p.x1 == -1) {
-                                p.x1 = Integer.parseInt(num);
-                                System.out.print("x1:" + p.x1);
-                                num = "";
-                            } else if (p.y1 == -1) {
-                                p.y1 = Integer.parseInt(num);
-                                System.out.print("y1:" + p.y1);
-                                num = "";
-                            } else if (p.x2 == -1) {
-                                p.x2 = Integer.parseInt(num);
-                                num = "";
-                                System.out.print("x2:" + p.x2);
-                            } else if (p.y2 == -1) {
-                                p.y2 = Integer.parseInt(num);
-                                num = "";
-                                System.out.print("y2:" + p.y2);
-                            }
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            }
+            String num = "";
+            while (in.hasNext()) {
+                String line = in.nextLine();
+                Point p = new Point();
+                for (int i = 2; i < line.length(); i++) {
+                    char ch = line.charAt(i);
+                    if (ch != ' ' && i != line.length() - 1) {
+                        num += ch;
+                        //System.out.println("num: " + Integer.parseInt(num));
+                    } else {
+                        if (i == line.length() - 1) {
+                            num += line.charAt(i);
+                        }
+                        if (p.x1 == -1) {
+                            p.x1 = Integer.parseInt(num);
+                            System.out.print("x1:" + p.x1);
+                            num = "";
+                        } else if (p.y1 == -1) {
+                            p.y1 = Integer.parseInt(num);
+                            System.out.print("y1:" + p.y1);
+                            num = "";
+                        } else if (p.x2 == -1) {
+                            p.x2 = Integer.parseInt(num);
+                            num = "";
+                            System.out.print("x2:" + p.x2);
+                        } else if (p.y2 == -1) {
+                            p.y2 = Integer.parseInt(num);
+                            num = "";
+                            System.out.print("y2:" + p.y2);
                         }
                     }
-                    server.addPoint(p.x1, p.y1, p.x2, p.y2, color);
                 }
-                server.sendAllPoints();
-
+                server.addPoint(p.x1, p.y1, p.x2, p.y2, color);
             }
+            server.sendAllPoints();
+
         });
 
-        btnSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    JFileChooser fileSave = new JFileChooser();
-                    fileSave.setDialogType(JFileChooser.SAVE_DIALOG);
-                    fileSave.setCurrentDirectory(new File("C:/Users/Никита/Desktop/Saves"));
-                    int ret = fileSave.showDialog(null, "Создать файл");
-                    if (ret == JFileChooser.APPROVE_OPTION) {
-                        File file = fileSave.getSelectedFile();
-                        bufferedWriter = new BufferedWriter(new FileWriter(file));
-                        for (int i = 0; i < game.getState().getPoints().size(); i++) {
-                            x1 = game.getState().getPoints().get(i).x1;
-                            y1 = game.getState().getPoints().get(i).y1;
-                            x2 = game.getState().getPoints().get(i).x2;
-                            y2 = game.getState().getPoints().get(i).y2;
-                            bufferedWriter.write("p:" + x1 + " " + y1 + " " + x2 + " " + y2 + "\n");
-                        }
-
-                        bufferedWriter.close();
+        btnSave.addActionListener(e -> {
+            try {
+                JFileChooser fileSave = new JFileChooser();
+                fileSave.setDialogType(JFileChooser.SAVE_DIALOG);
+                int ret = fileSave.showDialog(null, "Create File");
+                if (ret == JFileChooser.APPROVE_OPTION) {
+                    File file = fileSave.getSelectedFile();
+                    bufferedWriter = new BufferedWriter(new FileWriter(file));
+                    for (int i = 0; i < game.getState().getPoints().size(); i++) {
+                        x1 = game.getState().getPoints().get(i).x1;
+                        y1 = game.getState().getPoints().get(i).y1;
+                        x2 = game.getState().getPoints().get(i).x2;
+                        y2 = game.getState().getPoints().get(i).y2;
+                        bufferedWriter.write("p:" + x1 + " " + y1 + " " + x2 + " " + y2 + "\n");
                     }
 
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+                    bufferedWriter.close();
                 }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         });
-        btnСlear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                repaint();
-                game.getState().getPoints().clear();
-                server.sendClearPaintPanel();
-            }
+        btnСlear.addActionListener(e -> {
+            repaint();
+            game.getState().getPoints().clear();
+            server.sendClearPaintPanel();
         });
 
-        btnBlack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                color = Color.black;
-            }
-        });
+        btnBlack.addActionListener(e -> color = Color.black);
 
-        btnBlue.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                color = Color.blue;
-            }
-        });
+        btnBlue.addActionListener(e -> color = Color.blue);
 
-        btnRed.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                color = Color.red;
-            }
-        });
+        btnRed.addActionListener(e -> color = Color.red);
 
-        btnGreen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                color = Color.green;
-            }
-        });
+        btnGreen.addActionListener(e -> color = Color.green);
     }
 
 
@@ -236,11 +199,6 @@ public class PaintPanelServer extends JPanel {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setColor(color);
                 g2.setStroke(new BasicStroke((float)3));
-               /* try {
-                    bufferedWriter.write("p:" + x1 + " "+ y1 + " " + x2+ " " + y2 + "\n");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }*/
                 g2.drawLine(x1, y1, x2, y2);
 
                 server.addPoint(x1, y1, x2, y2, color);

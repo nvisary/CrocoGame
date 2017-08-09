@@ -52,18 +52,15 @@ public class ChatPanelClient extends JPanel implements ActionListener{
         if (!checkWord(msg)) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Слово может содержать только русские буквы!",
-                    "Ошибка!",
+                    "Word can only contain English letters",
+                    "Error!",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                textArea.append(msg + "\n");
-                userInputField.setText("");
-            }
+        SwingUtilities.invokeLater(() -> {
+            textArea.append(msg + "\n");
+            userInputField.setText("");
         });
         game.sendMessageToServer(msg);
     }
@@ -74,7 +71,7 @@ public class ChatPanelClient extends JPanel implements ActionListener{
             retValue = false;
         for (int i = 0; i < word.length();i++ ) {
             char ch = word.charAt(i);
-            if (ch < 'А' || ch > 'я') {
+            if (ch < 'A' || ch > 'z') {
                 retValue = false;
             }
         }

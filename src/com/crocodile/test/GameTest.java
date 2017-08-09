@@ -16,14 +16,14 @@ class GameTest {
     @BeforeEach
     void setUp() {
         game = new Game(new JFrame("test"));
-        game.getState().setSecretWord("Яблоко");
+        game.getState().setSecretWord("Apple");
     }
 
     @Test
     void isGoodSecretWord() {
-        assertTrue(game.checkWord("яблоко"));
-        assertFalse(game.checkWord("банан"));
-        assertFalse(game.checkWord("apple"));
+        assertTrue(game.checkWord("apple"));
+        assertFalse(game.checkWord("banana"));
+        assertFalse(game.checkWord("яблоко"));
     }
 
 }

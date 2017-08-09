@@ -30,7 +30,7 @@ class LoadSettingsTest {
         try {
             loadSettings.loadSettingsFromFile();
         } catch (IOException e) {
-            fail("Файд не найден!");
+            fail("File not found");
         }
     }
 

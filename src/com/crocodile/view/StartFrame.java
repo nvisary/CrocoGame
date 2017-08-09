@@ -31,14 +31,14 @@ public class StartFrame extends JFrame implements ActionListener {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JOptionPane.showMessageDialog(null,
-                            "Игра крокодил.\nАвторы:\nТарасов Никита\nКудрявцева Екатерина",
-                            "О нас",
+                            "Croco Game.\nAuthor:\nnvisary\nhttps://github.com/nvisary",
+                            "About",
                             JOptionPane.PLAIN_MESSAGE);
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    picMsg.paintText("Привет!");
+                    picMsg.paintText("Hello!");
                     picMsg.setVisible(true);
 
                 }
@@ -84,11 +84,9 @@ public class StartFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton btn = (JButton) e.getSource();
         if (btn.getText().equals(Styles.btnStartServerText)) {
-            //нажатие первой кнопки
             ServerFrame serverFrame = new ServerFrame();
             setVisible(false);
         } else {
-            //нажатие второй кнопки
             ClientFrame clientFrame = new ClientFrame();
             setVisible(false);
         }

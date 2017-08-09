@@ -28,10 +28,8 @@ public class Game  {
 
     public void startServerGame() {
 
-        //Загрузка настроек
         loadSettings();
 
-        //Создание и запуск сервера
         server = new Server(this);
         Thread serverThread = new Thread(server);
         serverThread.start();
@@ -64,11 +62,9 @@ public class Game  {
         return false;
     }
     public void wordIsGuessed() {
-        /*JOptionPane.showMessageDialog(null, "Слово угадано", "Конец игры", JOptionPane.INFORMATION_MESSAGE);*/
-        int rezult;
-       rezult = JOptionPane.showConfirmDialog(null,
-                "Начать новую игру?",
-                "Слово угадано",
+       int rezult = JOptionPane.showConfirmDialog(null,
+                "Start new game?",
+                "word is correct",
                 JOptionPane.YES_NO_OPTION);
         if (server!= null)
             server.shutDown();
@@ -102,7 +98,7 @@ public class Game  {
             loadSecretWord.loadWordsFromFile();
             state.setSecretWord(loadSecretWord.getRandomWorld());
         } catch (FileNotFoundException e) {
-            System.out.println("файл words.txt не найден!");
+            System.out.println("file words.txt not found!");
         }
     }
     public State getState() {

@@ -26,7 +26,7 @@ class LoadSecretWordTest {
         try {
             loadSecretWord.loadWordsFromFile();
         } catch (FileNotFoundException e) {
-            fail("Файл не найден");
+            fail("file not found");
         }
     }
 

@@ -12,7 +12,7 @@ public class LabelPanel extends JPanel{
         lblword = new JLabel();
         lblword.setForeground(Styles.labelColor);
         lblword.setFont(Styles.labelFont);
-        lblword.setText("Нарисуйте: " + word);
+        lblword.setText("Draw: " + word);
         lblword.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         add(lblword);
     }

@@ -30,7 +30,6 @@ public class Server implements Runnable {
     @Override
     public void run() {
         try {
-            //запуск сервера и ожидание клиентов
             serverSocket = new ServerSocket(port);
             socket = serverSocket.accept();
 
@@ -40,7 +39,7 @@ public class Server implements Runnable {
 
             serverRun = true;
         } catch (IOException e) {
-            System.out.println("Ошибка не удалось подключится или установить поток с клиентом");
+            System.out.println("Could not connect to client");
         }
          receiveMessages();
     }
@@ -90,7 +89,7 @@ public class Server implements Runnable {
                 objectOutputStream.writeObject(p);
             }
         } catch (IOException e1) {
-            System.out.println("Не удалось отправить поинт");
+            System.out.println("Could not send point");
         }
     }
 
