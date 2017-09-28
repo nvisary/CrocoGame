@@ -6,3 +6,10 @@ in LAN.
       
       javac com/crocodile/Main.java
       java com.crocodile.Main
+      
+
+![screen1](https://github.com/nvisary/CrocoGame/blob/master/screenshots/screen1.png)
+![screen2](https://github.com/nvisary/CrocoGame/blob/master/screenshots/screen2.png)
+![screen3](https://github.com/nvisary/CrocoGame/blob/master/screenshots/screen3.png)
+![screen4](https://github.com/nvisary/CrocoGame/blob/master/screenshots/screen4.png)
+
